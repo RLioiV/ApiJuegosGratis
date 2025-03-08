@@ -1,18 +1,13 @@
-import { ThemeProvider, createTheme, CssBaseline } from '@mui/material'
+import React from 'react'
 import GamesList from './components/GamesList'
-
-const theme = createTheme({
-  palette: {
-    mode: 'dark'
-  }
-})
+import { Container } from '@mui/material'
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
+    <Container>
+      <h1>Free Games List</h1>
       <GamesList />
-    </ThemeProvider>
+    </Container>
   )
 }
 
