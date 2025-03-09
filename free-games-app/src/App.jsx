@@ -1,22 +1,29 @@
 import React from 'react';
-import { CssBaseline, AppBar, Toolbar, Typography, Container } from '@mui/material';
+import { CssBaseline, AppBar, Toolbar, Typography, Container, createTheme, ThemeProvider } from '@mui/material';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import GamesList from './component/GamesList';
+import GameDetails from './component/GameDetails';
+
+const theme = createTheme({
+  palette: {
+    background: {
+      default: '#f5f5f5', // Light gray background
+      paper: '#ffffff',   // White card background
+    },
+  },
+});
 
 function App() {
   return (
-    <>
-      <CssBaseline />
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" component="div">
-            Free Games Explorer
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Container sx={{ mt: 4 }}>
-        <GamesList />
-      </Container>
-    </>
+    <ThemeProvider theme={theme}>
+      <CssBaseline /> {/* This will normalize styles */}
+      <Router>
+        <Routes>
+          <Route path="/" element={<GamesList />} />
+          <Route path="/game/:id" element={<GameDetails />} />
+        </Routes>
+      </Router>
+    </ThemeProvider>
   );
 }
 
