@@ -1,6 +1,6 @@
 import React from 'react';
 import { CssBaseline, AppBar, Toolbar, Typography, Container } from '@mui/material';
-import GamesList from './components/GamesList';
+import GamesList from './component/GamesList';
 
 function App() {
   return (
