@@ -1,12 +1,60 @@
-# React + Vite
+# Free Games App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Pagina que muestra juegos gratuitos para PC, utilizando la  API gratuita: Free-to-Play Games Database.
 
-Currently, two official plugins are available:
+Se utilizo Claude 3.5 para resolver errores y obstaculos.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Funciones
 
-## Expanding the ESLint configuration
+- Lista de juegos gratuitos
+- Ver información de cada juego
+- Filtrar juegos por género
+- Acceder a enlaces directos para jugar los juegos
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tecnologías utilizadas
+
+- React
+- Material-UI
+- React Router
+- Vite
+- RapidAPI
+
+## Instalación
+
+1. Clonar el repositorio:
+```bash
+git clone [your-repository-url]
+cd free-games-app
+```
+
+2. Instalar dependencias:
+```bash
+npm install
+```
+
+3. Crear un archivo `.env` en el directorio raíz y agregar tu clave de RapidAPI:
+```env
+VITE_RAPID_API_KEY=your_api_key_here
+```
+
+## Uso
+
+1. Iniciar el servidor de desarrollo:
+```bash
+npm run dev
+```
+
+2. Abrir tu navegador y navegar a:
+```
+http://localhost:5173
+```
+
+## Referencia de la API
+
+Este proyecto utiliza la API [Free-to-Play Games Database](https://rapidapi.com/digiwalls/api/free-to-play-games-database) de RapidAPI.
+
+## Variables de entorno
+
+Variables de entorno requeridas:
+- `VITE_RAPID_API_KEY`: Tu clave de RapidAPI para acceder a la Free-to-Play Games Database
+

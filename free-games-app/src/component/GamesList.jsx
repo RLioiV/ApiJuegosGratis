@@ -13,7 +13,7 @@ import {
   Select,
   MenuItem
 } from '@mui/material';
-import { getFreeGames } from '../Services/api';  // Updated casing here
+import { getFreeGames } from '../Services/api';
 import { Link } from 'react-router-dom';
 
 const GamesList = () => {
@@ -25,8 +25,7 @@ const GamesList = () => {
   useEffect(() => {
     const loadGames = async () => {
       try {
-        const data = await getFreeGames();
-        setGames(data);
+        setGames(await getFreeGames());
       } catch (err) {
         setError('Failed to load games. Please try again later.');
       } finally {
@@ -37,63 +36,33 @@ const GamesList = () => {
     loadGames();
   }, []);
 
-  const getUniqueGenres = () => {
-    const genres = games.map(game => game.genre);
-    return ['all', ...new Set(genres)];
-  };
+  if (loading) return <Box display="flex" justifyContent="center" my={4}><CircularProgress /></Box>;
+  if (error) return <Box my={4}><Typography color="error" align="center">{error}</Typography></Box>;
 
-  const filteredGames = selectedGenre === 'all' 
-    ? games 
-    : games.filter(game => game.genre === selectedGenre);
-
-  if (loading) {
-    return (
-      <Box display="flex" justifyContent="center" my={4}>
-        <CircularProgress />
-      </Box>
-    );
-  }
-
-  if (error) {
-    return (
-      <Box my={4}>
-        <Typography color="error" align="center">
-          {error}
-        </Typography>
-      </Box>
-    );
-  }
+  const genres = ['all', ...new Set(games.map(game => game.genre))];
+  const filteredGames = selectedGenre === 'all' ? games : games.filter(game => game.genre === selectedGenre);
 
   return (
     <Container sx={{ py: 4 }}>
-      <Typography 
-        variant="h4" 
-        component="h1" 
-        align="center" 
-        gutterBottom 
-        sx={{ my: 3 }}
-      >
+      <Typography variant="h4" component="h1" align="center" gutterBottom sx={{ my: 3 }}>
         Free Games List
       </Typography>
 
-      <Box sx={{ minWidth: 120, mb: 3 }}>
-        <FormControl fullWidth>
-          <InputLabel id="genre-select-label">Filter by Genre</InputLabel>
-          <Select
-            labelId="genre-select-label"
-            id="genre-select"
-            value={selectedGenre}
-            label="Filter by Genre"
-            onChange={(e) => setSelectedGenre(e.target.value)}
-          >
-            {getUniqueGenres().map((genre) => (
-              <MenuItem key={genre} value={genre}>
-                {genre.charAt(0).toUpperCase() + genre.slice(1)}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Box>
+      <FormControl fullWidth sx={{ mb: 3 }}>
+        <InputLabel id="genre-select-label">Filter by Genre</InputLabel>
+        <Select
+          labelId="genre-select-label"
+          value={selectedGenre}
+          label="Filter by Genre"
+          onChange={(e) => setSelectedGenre(e.target.value)}
+        >
+          {genres.map((genre) => (
+            <MenuItem key={genre} value={genre}>
+              {genre.charAt(0).toUpperCase() + genre.slice(1)}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
       
       <Grid container spacing={3}>
         {filteredGames.map((game) => (
@@ -103,7 +72,6 @@ const GamesList = () => {
               to={`/game/${game.id}`} 
               sx={{ 
                 textDecoration: 'none',
-                backgroundColor: '#ffffff',
                 borderRadius: 2,
                 boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
                 transition: 'transform 0.2s, box-shadow 0.2s',
@@ -122,13 +90,9 @@ const GamesList = () => {
                 image={game.thumbnail}
                 alt={game.title}
               />
-              <CardContent sx={{ flexGrow: 1, bgcolor: '#ffffff' }}>
-                <Typography gutterBottom variant="h6" component="div">
-                  {game.title}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {game.short_description}
-                </Typography>
+              <CardContent sx={{ flexGrow: 1 }}>
+                <Typography gutterBottom variant="h6">{game.title}</Typography>
+                <Typography variant="body2" color="text.secondary">{game.short_description}</Typography>
                 <Typography variant="body2" color="text.secondary" mt={1}>
                   Genre: {game.genre}
                 </Typography>
