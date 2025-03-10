@@ -36,19 +36,32 @@ export const getGameDetails = async (id) => {
   const options = {
     method: 'GET',
     headers: {
-      'X-RapidAPI-Key': import.meta.env.VITE_API_KEY,
+      'X-RapidAPI-Key': import.meta.env.VITE_RAPID_API_KEY,
       'X-RapidAPI-Host': 'free-to-play-games-database.p.rapidapi.com'
     }
   };
 
   try {
     const response = await fetch(`https://free-to-play-games-database.p.rapidapi.com/api/game?id=${id}`, options);
+    
+    // Add detailed error logging
     if (!response.ok) {
-      throw new Error('Network response was not ok');
+      const errorText = await response.text();
+      console.error('API Response:', {
+        status: response.status,
+        statusText: response.statusText,
+        body: errorText
+      });
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-    return await response.json();
+    
+    const data = await response.json();
+    return data;
   } catch (error) {
-    console.error('Error fetching game details:', error);
+    console.error('Detailed API error:', {
+      message: error.message,
+      stack: error.stack
+    });
     throw error;
   }
 };

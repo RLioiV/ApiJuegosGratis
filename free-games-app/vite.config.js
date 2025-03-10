@@ -10,7 +10,15 @@ export default defineConfig({
       '/api': {
         target: 'https://free-to-play-games-database.p.rapidapi.com',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
+        rewrite: (path) => path.replace(/^\/api/, ''),
+        configure: (proxy, options) => {
+          proxy.on('error', (err, req, res) => {
+            console.error('Proxy error:', err);
+          });
+          proxy.on('proxyReq', (proxyReq, req, res) => {
+            console.log('Proxy request:', req.url);
+          });
+        }
       }
     }
   }

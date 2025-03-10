@@ -20,12 +20,32 @@ const GameDetails = () => {
 
   useEffect(() => {
     const loadGameDetails = async () => {
+      if (!id) {
+        setError('Invalid game ID');
+        setLoading(false);
+        return;
+      }
+
       try {
         setLoading(true);
+        setError(null);
+        
+        // Log the ID being fetched
+        console.log('Fetching game ID:', id);
+        
         const data = await getGameDetails(id);
+        
+        if (!data) {
+          throw new Error('No game data received');
+        }
+        
         setGame(data);
       } catch (err) {
-        setError('Failed to load game details.');
+        console.error('Error loading game details:', {
+          message: err.message,
+          id: id
+        });
+        setError('Failed to load game details. Please try again later.');
       } finally {
         setLoading(false);
       }
