@@ -10,7 +10,7 @@ import {
   CircularProgress,
   Box 
 } from '@mui/material';
-import { getFreeGames } from '../Services/api';
+import { getGameDetails } from '../Services/api';
 
 const GameDetails = () => {
   const { id } = useParams();
@@ -21,9 +21,9 @@ const GameDetails = () => {
   useEffect(() => {
     const loadGameDetails = async () => {
       try {
-        const games = await getFreeGames();
-        const selectedGame = games.find(g => g.id === parseInt(id));
-        setGame(selectedGame);
+        setLoading(true);
+        const data = await getGameDetails(id);
+        setGame(data);
       } catch (err) {
         setError('Failed to load game details.');
       } finally {
@@ -56,11 +56,15 @@ const GameDetails = () => {
   }
 
   return (
-    <Container maxWidth="md">
-      <Card sx={{ my: 4 }}>
+    <Container maxWidth="md" sx={{ py: 4 }}>
+      <Card sx={{ 
+        backgroundColor: '#ffffff',
+        borderRadius: 2,
+        boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+      }}>
         <CardMedia
           component="img"
-          height="300"
+          height="400"
           image={game.thumbnail}
           alt={game.title}
         />
@@ -69,7 +73,7 @@ const GameDetails = () => {
             {game.title}
           </Typography>
           <Typography variant="body1" paragraph>
-            {game.description || game.short_description}
+            {game.description}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Genre: {game.genre}
@@ -83,9 +87,22 @@ const GameDetails = () => {
           <Typography variant="body2" color="text.secondary">
             Release Date: {game.release_date}
           </Typography>
-          <Box mt={2}>
-            <Button component={Link} to="/" variant="contained">
+          <Box mt={3}>
+            <Button 
+              component={Link} 
+              to="/" 
+              variant="contained" 
+              sx={{ mr: 2 }}
+            >
               Back to Games List
+            </Button>
+            <Button 
+              href={game.game_url} 
+              target="_blank" 
+              variant="contained" 
+              color="secondary"
+            >
+              Play Now
             </Button>
           </Box>
         </CardContent>
